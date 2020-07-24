@@ -2,9 +2,16 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  database: dev_test
+  host: localhost
+  username: devtest
+  password: 1234
 development:
   <<: *default
-  database: PortalSolarDevTest_development
+  database: dev_test
+  host: localhost
+  username: devtest
+  password: 1234
 production:
   <<: *default
   database: PortalSolarDevTest_production
