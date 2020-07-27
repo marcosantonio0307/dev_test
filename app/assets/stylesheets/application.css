@@ -27,7 +27,9 @@ body {
 }
 
 .box {
-  padding: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
+  min-height: 25ex;
 }
 
 h2 {
@@ -104,13 +106,24 @@ p.power_generator-card__price {
 }
 
 .simple-form__btn {
-  margin-left: -60px;
+  float: left;
+  margin-left: 0px;
 }
 
 .advanced-form {
   margin-top: 22px;
   margin-bottom: 20px;
   margin-left: 100px;
+}
+
+.advanced-form__input {
+  float: left;
+}
+
+.form-btn {
+  float: right;
+  margin-top: 20px;
+  margin-left: 10px;
 }
 
 .power_generators-list {
@@ -121,10 +134,11 @@ p.power_generator-card__price {
 
 .power_generator-card {
   height: 200px;
-  width: 720px;
+  width: 920px;
   display: flex;
   flex-direction: row;
   margin-left: -60px;
+  margin-bottom: 7ex;
 }
 
 .power_generator-card__img {
@@ -138,7 +152,19 @@ p.power_generator-card__price {
   margin-right: 130px;
 }
 
+.power_generator-card__bottom {
+  margin-left: 26px;
+  margin-right: 130px;
+}
+
 .power_generator-card__button {
   color: #e96443;
 }
 
+.box-calc-freight {
+  width: 100%;
+}
+
+#uf{
+  width: 20px;
+}

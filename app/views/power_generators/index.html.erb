@@ -16,32 +16,81 @@
       </div>
     </div>
 
-    <%= form_tag do %>
-      <div class="simple-form">
+    <div class="simple-form">
+      <%= form_tag search_power_generators_path, method: :post, remote: true do %>
         <div class="simple-form__input">
-          <input class="form-control form-control-lg" type="text" placeholder="o que procura?">
+          <%= text_field_tag :text_search, @text_search, placeholder: 'o que procura?' %>
         </div>
-        <div class="simple-form__btn">
-          <button type="submit" class="btn btn-outline-primary btn-lg">Pesquisar</button>
+        <div>
+          <%= button_to :Pesquisar, nil, class: 'simple-form__btn' %>
         </div>
-      </div>
+      <% end %>
+    </div>
 
-      <div class="advanced-form" style="display:none;">
-        Entradas do usuário para pesquisar uma coleção de geradores de energia com base nas recomendações fornecidas e melhor custo de frete.
-      </div>
-    <% end %>
+    <div class="advanced-form" style="display:none;">
+      <%= form_tag search_power_generators_path, method: :post, remote: true do %>
+        <div class="advanced-form__input">
+          <%= label_tag 'Preço Max.' %> <br>
+          <%= select_tag :price_max, options_for_select([['Qualquer Valor', 999999999], ['até R$ 5.000,00', 5000],['até R$ 15.000,00', 15000], ['até R$ 25.000,00', 25000], ['até R$ 50.000,00', 50000], ['até R$ 100.000,00', 100000]]) %>
+        </div>
+        <div class="advanced-form__input">
+          <%= label_tag 'Peso Max.' %> <br>
+          <%= select_tag :weight_max, options_for_select([['Qualquer Peso', 999999999], ['até 100Kg', 100],['até 130Kg', 130], ['até 150Kg', 150], ['até 200Kg', 200]]) %>
+        </div>
+        <div class="advanced-form__input">
+          <%= label_tag 'Fabricação' %> <br>
+          <%= select_tag :manufacturer, options_for_select([['Todas', 'all']] + PowerGenerator.all.collect{|pg| pg.manufacturer}.uniq) %>
+        </div>
+        <div class="advanced-form__input">
+          <%= label_tag 'Tipo de Estrutura' %> <br>
+          <%= select_tag :structure_type, options_for_select([['Todas', 'all']] + PowerGenerator.all.collect{|pg| pg.structure_type}.uniq) %>
+        </div>
+        <%= button_to :Pesquisar, nil, class: 'form-btn' %>
+      <% end %>
+     <!-- Entradas do usuário para pesquisar uma coleção de geradores de energia com base nas recomendações fornecidas e melhor custo de frete. -->
+    </div>
   </div>
-
-  <div class="container" >
-    <% @power_generators.each do |power_generator| %>
-      <div class="box card power_generator-card">
-        <%= image_tag power_generator.image_url, class: 'power_generator-card__img' %>
-        <div class="power_generator-card__body">
-          <h2><%= power_generator.name.upcase %></h2>
-          <p class="power_generator-card__price"><%= number_to_currency(power_generator.price, unit: "R$ ", precision: 2, :separator => ",", :delimiter => ".") %></p>
-          <p><strong>Descrição: </strong><%= power_generator.description %></p>
+  
+  <div id="session_power_generators" class="container" >
+    <div id="box_power_generators">
+      <% @power_generators.each do |power_generator| %>
+        <div class="box card power_generator-card">
+          <%= image_tag power_generator.image_url, width: '220px', height: '220px', class: 'power_generator-card__img' %>
+          <div class="power_generator-card__body">
+            <h2><%= power_generator.name.upcase %></h2>
+            <p class="power_generator-card__price"><%= number_to_currency(power_generator.price, unit: "R$ ", precision: 2, :separator => ",", :delimiter => ".") %></p>
+            <p><strong>Descrição: </strong><%= power_generator.description %></p>
+            <div class="power_generator-card__footer">
+              <div class="freight-btn">
+                Calcular Frete>>
+              </div>
+              <div id="box_freight" class="box-calc-freight" style="display: none;">
+                <%= form_tag calc_freight_path, method: :post, remote: true do %>
+                  <%= label_tag "CEP" %>
+                  <%= hidden_field_tag :weight, power_generator.weight %>
+                  <%= text_field_tag :cep, "", id: 'cep' %>
+                  <%= hidden_field_tag :uf, "", id: 'uf' %>
+                  <%= text_field_tag :city, "", id: 'city', disabled: true %>
+                  <%= button_to 'Calcular', nil %>
+                <% end %>
+                <div id="freight_price">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
+
+
+<script>
+  $("#cep").blur(function() {
+    var cep = $(this).val()
+    $.getJSON("http://viacep.com.br/ws/"+cep+"/json/?callback=?", function(dados) {
+      $("#uf").val(dados.uf);
+      $("#city").val(dados.localidade);
+    });
+  })
+</script>

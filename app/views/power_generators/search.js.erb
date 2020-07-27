@@ -1,0 +1,21 @@
+console.log("<%= @text_search %>")
+console.log("<%= @power_generators.count %>")
+
+// Session Power Generators -------
+
+$('#box_power_generators').remove()
+$('#session_power_generators').append('<div id="box_power_generators">')
+<% @power_generators.each do |power_generator| %>
+  $('#box_power_generators').append(
+    '<div class="box card power_generator-card">' + 
+  	  '<img src="<%= power_generator.image_url %>" class="power_generator-card__img">' +
+  	  '<div class="power_generator-card__body">' +
+  	  	'<h2>' + "<%= power_generator.name.upcase %>" + '</h2>' +
+        '<p class="power_generator-card__price">' + "<%= number_to_currency(power_generator.price, unit: 'R$ ', precision: 2, separator: ',', delimiter: '.') %>" + '</p>' +
+  	    '<p>' + '<strong>' + 'Descrição:' + '</strong>' + "<%= power_generator.description.gsub(/\n/,'').squeeze %>" + '</p>' +
+      '</div>' +
+    '</div>' +
+    '</div>')
+<% end %>
+
+// End Sesion Power Generators -----
