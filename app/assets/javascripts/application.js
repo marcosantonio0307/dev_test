@@ -28,4 +28,11 @@ function ready(event) {
   });
 }
 
+$(document).ready(function(){
+  $('.freight-btn').click(function(){
+    $(this).toggleClass('active').next().slideToggle('fast')
+    return false
+  })
+})
+
 $(document).on('turbolinks:load', ready);
