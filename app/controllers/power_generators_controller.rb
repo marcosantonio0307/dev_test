@@ -7,6 +7,12 @@ class PowerGeneratorsController < ApplicationController
   	if params[:text_search] != nil
   	  @text_search = params[:text_search].to_s
   	  @power_generators = PowerGenerator.where('name ILIKE ?', "%#{@text_search}%")
+    elsif params[:filter].to_i != 0
+      if params[:filter].to_i == 1
+        @power_generators = PowerGenerator.all.order(:price)
+      elsif params[:filter].to_i == 2
+        @power_generators = PowerGenerator.all.order(:kwp)
+      end   
   	else
   	  @power_generators = PowerGenerator.where('price <= ?', params[:price_max].to_f)
   	  @power_generators = @power_generators.where('weight <= ?', params[:weight_max].to_f)

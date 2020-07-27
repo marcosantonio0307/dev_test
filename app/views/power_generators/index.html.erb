@@ -20,10 +20,14 @@
       <%= form_tag search_power_generators_path, method: :post, remote: true do %>
         <div class="simple-form__input">
           <%= text_field_tag :text_search, @text_search, placeholder: 'o que procura?' %>
-        </div>
-        <div>
           <%= button_to :Pesquisar, nil, class: 'simple-form__btn' %>
         </div>
+      <% end %>
+      <%= form_tag search_power_generators_path, method: :post, remote: true do %>
+        <div class="simple-form__input">
+          <%= select_tag :filter, options_for_select([['Sem Filtro', 0], ['Preço', 1], ['KWP', 2]]) %> <br>
+          <%= button_to :filtrar, nil, class: 'simple-form__btn' %>
+        </div> 
       <% end %>
     </div>
 
