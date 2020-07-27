@@ -25,7 +25,14 @@ class PowerGeneratorsController < ApplicationController
   	end
   end
 
-  private
-	def filter
-	end
+  def calc_freight
+  	freight = Freight.where(state: params[:uf].upcase)
+    byebug
+    @freight_price = freight.cost
+  	respond_to do |format|
+  	  format.html
+  	  format.json
+  	  format.js
+  	end
+  end
 end
